@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aeon Stage 2 Test - Live Preview</title>
+    <link rel="stylesheet" href="css/aeon.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Aeon VS Code Extension - Stage 2 Test Page</h1>
+        
+        <!-- Test Status Messages -->
+        <#STATUS class="status-message info">
+        
+        <!-- Test Include Files -->
+        <#INCLUDE filename="includes/header.html">
+        
+        <!-- Test User Information -->
+        <div class="user-info">
+            <h2>User Information</h2>
+            <p>Welcome, <#USER field="FirstName"> <#USER field="LastName">!</p>
+            <p>Username: <#USER field="Username"></p>
+            <p>Email: <#USER field="EmailAddress"></p>
+            <p>Department: <#USER field="Department"></p>
+        </div>
+        
+        <!-- Test Transaction Details -->
+        <div class="item-info">
+            <h2>Current Request</h2>
+            <div class="field-group">
+                <span class="field-label">Transaction #:</span>
+                <span class="field-value"><#PARAM name="TransactionNumber"></span>
+            </div>
+            <div class="field-group">
+                <span class="field-label">Title:</span>
+                <span class="field-value"><#PARAM name="ItemTitle"></span>
+            </div>
+            <div class="field-group">
+                <span class="field-label">Author:</span>
+                <span class="field-value"><#PARAM name="ItemAuthor"></span>
+            </div>
+            <div class="field-group">
+                <span class="field-label">Call Number:</span>
+                <span class="field-value"><#PARAM name="CallNumber"></span>
+            </div>
+            <div class="field-group">
+                <span class="field-label">Location:</span>
+                <span class="field-value"><#PARAM name="Location"></span>
+            </div>
+        </div>
+        
+        <!-- Test Form with Validation -->
+        <form action="aeon.dll" method="post" name="RequestForm">
+            <input type="hidden" name="AeonForm" value="TestRequest">
+            <#FORMSTATE>
+            
+            <h2>Edit Request</h2>
+            
+            <div class="form-group">
+                <label for="ItemTitle" class="form-label">
+                    Title <span class="required">*</span>
+                </label>
+                <input type="text" name="ItemTitle" id="ItemTitle" class="form-control" 
+                       value="<#PARAM name='ItemTitle'>" required>
+                <#ERROR field="ItemTitle">
+            </div>
+            
+            <div class="form-group">
+                <label for="Notes" class="form-label">Research Notes</label>
+                <textarea name="ResearcherNotes" id="Notes" class="form-control" rows="4"><#PARAM name="ResearcherNotes"></textarea>
+            </div>
+            
+            <div class="form-group">
+                <label for="Format" class="form-label">Preferred Format</label>
+                <#OPTION name="Format" class="form-select">
+            </div>
+            
+            <!-- Test Conditional Display -->
+            <#CONDITIONAL test="RequestType=PhotoduplicationRequest">
+            <div class="photodup-options">
+                <h3>Photoduplication Options</h3>
+                <#INCLUDE type="Photoduplication">
+            </div>
+            
+            <!-- Test Table Display -->
+            <h3>Recent Transactions</h3>
+            <#TABLE name="Transactions" class="table table-striped">
+            
+            <!-- Include Buttons -->
+            <#INCLUDE type="RequestButtons">
+        </form>
+        
+        <!-- Test Activity Information -->
+        <div class="activity-info">
+            <h3>Current Activity</h3>
+            <p>Activity: <#ACTIVITY field="Name"></p>
+            <p>Type: <#ACTIVITY field="Type"></p>
+            <p>Begin Date: <#ACTIVITY field="BeginDate"></p>
+        </div>
+    </div>
+    
+    <script>
+        // Test JavaScript Integration
+        console.log('Aeon Stage 2 Preview Test Page Loaded');
+        
+        // Highlight fields with mock data
+        document.querySelectorAll('.param-value, .user-field, .activity-field').forEach(el => {
+            el.style.cursor = 'pointer';
+            el.title = 'Shift+Click to edit this field';
+        });
+    </script>
+</body>
+</html>

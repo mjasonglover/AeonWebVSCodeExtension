@@ -1,0 +1,466 @@
+/* Aeon Preview Styles */
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+/* Preview Controls */
+#preview-controls {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    background-color: var(--vscode-editor-background);
+    border-bottom: 1px solid var(--vscode-panel-border);
+    padding: 8px;
+}
+
+.preview-toolbar {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.preview-control {
+    padding: 4px 8px;
+    background: var(--vscode-button-background);
+    color: var(--vscode-button-foreground);
+    border: none;
+    border-radius: 2px;
+    cursor: pointer;
+    font-size: 13px;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.preview-control:hover {
+    background: var(--vscode-button-hoverBackground);
+}
+
+.preview-control:active {
+    transform: translateY(1px);
+}
+
+select.preview-control {
+    padding: 4px 24px 4px 8px;
+    background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12'%3E%3Cpath fill='%23999' d='M4.5 2.5l2.5 3 2.5-3z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 6px center;
+    appearance: none;
+}
+
+/* Preview Frame */
+#preview-frame {
+    padding: 20px;
+    min-height: calc(100vh - 60px);
+    background: #f5f5f5;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    overflow: auto;
+}
+
+#preview-wrapper {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
+
+#preview-content {
+    background: white;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    padding: 40px;
+    box-sizing: border-box;
+    margin: 0 auto;
+    overflow-x: auto;
+}
+
+/* Device Frames */
+.device-frame {
+    position: relative;
+    margin: 0 auto;
+}
+
+.device-frame iframe {
+    border: none;
+    display: block;
+}
+
+/* Aeon Tag Visualization */
+.aeon-tag {
+    position: relative;
+    display: inline-block;
+}
+
+.aeon-tag.unknown-tag {
+    color: var(--vscode-errorForeground);
+    text-decoration: underline wavy;
+}
+
+/* Tag Highlighting Mode */
+.aeon-tag[data-tag] {
+    transition: background-color 0.2s;
+}
+
+.aeon-tag:hover {
+    cursor: help;
+}
+
+/* Include Content */
+.include-content {
+    display: block;
+    position: relative;
+}
+
+.include-content[data-include]::before {
+    content: attr(data-include);
+    position: absolute;
+    top: -20px;
+    right: 0;
+    font-size: 11px;
+    color: #666;
+    background: #f0f0f0;
+    padding: 2px 6px;
+    border-radius: 3px;
+    opacity: 0;
+    transition: opacity 0.2s;
+}
+
+.include-content:hover::before {
+    opacity: 1;
+}
+
+/* Field Values */
+.param-value,
+.user-field,
+.activity-field {
+    background-color: rgba(0, 123, 255, 0.05);
+    padding: 0 4px;
+    border-radius: 3px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.param-value:hover,
+.user-field:hover,
+.activity-field:hover {
+    background-color: rgba(0, 123, 255, 0.15);
+}
+
+/* Error Display */
+#preview-errors {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+    padding: 16px;
+    padding-top: 12px;
+    border-radius: 4px;
+    max-width: 400px;
+    max-height: 300px;
+    overflow-y: auto;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+.error-close {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    background: none;
+    border: none;
+    font-size: 20px;
+    line-height: 1;
+    color: #721c24;
+    cursor: pointer;
+    padding: 0;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 3px;
+    transition: background-color 0.2s;
+}
+
+.error-close:hover {
+    background-color: rgba(0, 0, 0, 0.1);
+}
+
+.vscode-dark #preview-errors {
+    background: #4b1818;
+    color: #f8b9b9;
+    border-color: #842029;
+}
+
+.vscode-dark .error-close {
+    color: #f8b9b9;
+}
+
+.vscode-dark .error-close:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+#preview-errors h3 {
+    margin: 0 0 8px 0;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+#preview-errors ul {
+    margin: 0;
+    padding-left: 20px;
+    font-size: 12px;
+    line-height: 1.4;
+}
+
+#preview-errors li {
+    margin-bottom: 4px;
+}
+
+#preview-errors p {
+    margin: 8px 0;
+}
+
+.error-tip {
+    font-style: italic;
+    opacity: 0.9;
+    font-size: 11px;
+    margin-top: 8px !important;
+}
+
+.field-error {
+    color: #dc3545;
+    font-size: 12px;
+    display: block;
+    margin-top: 2px;
+}
+
+.vscode-dark .field-error {
+    color: #f8b9b9;
+}
+
+/* Mock Data Editor Modal */
+.mock-data-modal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: var(--vscode-editor-background);
+    border: 1px solid var(--vscode-panel-border);
+    border-radius: 4px;
+    padding: 20px;
+    max-width: 600px;
+    max-height: 80vh;
+    overflow-y: auto;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+    z-index: 2000;
+}
+
+.mock-data-modal h2 {
+    margin: 0 0 16px 0;
+    font-size: 18px;
+}
+
+.mock-data-field {
+    margin-bottom: 12px;
+}
+
+.mock-data-field label {
+    display: block;
+    margin-bottom: 4px;
+    font-size: 12px;
+    color: var(--vscode-descriptionForeground);
+}
+
+.mock-data-field input,
+.mock-data-field textarea {
+    width: 100%;
+    padding: 4px 8px;
+    background: var(--vscode-input-background);
+    color: var(--vscode-input-foreground);
+    border: 1px solid var(--vscode-input-border);
+    border-radius: 2px;
+    font-size: 13px;
+}
+
+.mock-data-field input:focus,
+.mock-data-field textarea:focus {
+    outline: none;
+    border-color: var(--vscode-focusBorder);
+}
+
+/* Theme Support */
+.theme-dark {
+    background: #1e1e1e;
+    color: #d4d4d4;
+}
+
+.theme-dark #preview-content {
+    background: #2d2d30;
+    color: #d4d4d4;
+}
+
+.theme-highContrast {
+    background: white;
+    color: black;
+}
+
+.theme-highContrast #preview-content {
+    background: white;
+    color: black;
+    border: 2px solid black;
+}
+
+/* Device-specific styling */
+#preview-content.mobile-viewport {
+    padding: 20px;
+}
+
+#preview-content.tablet-viewport {
+    padding: 30px;
+}
+
+/* Ensure content doesn't overflow on small viewports */
+#preview-content img,
+#preview-content table {
+    max-width: 100%;
+    height: auto;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    #preview-frame {
+        padding: 10px;
+    }
+    
+    #preview-content {
+        padding: 20px;
+    }
+    
+    .preview-toolbar {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .preview-control {
+        width: 100%;
+        justify-content: center;
+    }
+}
+
+/* Aeon Specific Styles */
+.doc-type-info,
+.photodup-info {
+    background-color: #f8f9fa;
+    border: 1px solid #dee2e6;
+    border-radius: 4px;
+    padding: 16px;
+    margin: 16px 0;
+}
+
+.request-buttons {
+    margin-top: 20px;
+    display: flex;
+    gap: 10px;
+}
+
+.status {
+    padding: 10px;
+    margin: 10px 0;
+    border-radius: 4px;
+    background-color: #d1ecf1;
+    color: #0c5460;
+    border: 1px solid #bee5eb;
+}
+
+/* Table Styles */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 16px 0;
+}
+
+table th,
+table td {
+    padding: 8px 12px;
+    text-align: left;
+    border-bottom: 1px solid #dee2e6;
+}
+
+table th {
+    background-color: #f8f9fa;
+    font-weight: 600;
+}
+
+table.table-striped tbody tr:nth-child(odd) {
+    background-color: #f8f9fa;
+}
+
+/* Form Elements */
+.form-select,
+.form-control {
+    display: block;
+    width: 100%;
+    padding: 6px 12px;
+    font-size: 14px;
+    line-height: 1.5;
+    color: #495057;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+    transition: border-color 0.15s ease-in-out;
+}
+
+.form-select:focus,
+.form-control:focus {
+    border-color: #80bdff;
+    outline: 0;
+    box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.25);
+}
+
+/* Button Styles */
+.btn {
+    display: inline-block;
+    font-weight: 400;
+    text-align: center;
+    vertical-align: middle;
+    user-select: none;
+    padding: 6px 12px;
+    font-size: 14px;
+    line-height: 1.5;
+    border-radius: 4px;
+    transition: all 0.15s ease-in-out;
+    cursor: pointer;
+    border: 1px solid transparent;
+}
+
+.btn-primary {
+    color: #fff;
+    background-color: #007bff;
+    border-color: #007bff;
+}
+
+.btn-primary:hover {
+    background-color: #0069d9;
+    border-color: #0062cc;
+}
+
+.btn-secondary {
+    color: #fff;
+    background-color: #6c757d;
+    border-color: #6c757d;
+}
+
+.btn-secondary:hover {
+    background-color: #5a6268;
+    border-color: #545b62;
+}

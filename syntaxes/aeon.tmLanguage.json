@@ -1,0 +1,256 @@
+{
+  "$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+  "name": "Aeon HTML",
+  "scopeName": "text.html.aeon",
+  "injectionSelector": "L:text.html",
+  "patterns": [
+    {
+      "include": "#aeon-tags"
+    }
+  ],
+  "repository": {
+    "aeon-tags": {
+      "patterns": [
+        {
+          "name": "tag.aeon.param",
+          "match": "(<#)(PARAM)(\\s+)(name)(=)(['\"])([^'\"]+)(['\"])(\\s*)(>)",
+          "captures": {
+            "1": { "name": "punctuation.definition.tag.begin.aeon" },
+            "2": { "name": "entity.name.tag.aeon" },
+            "3": { "name": "text.html.aeon" },
+            "4": { "name": "entity.other.attribute-name.aeon" },
+            "5": { "name": "punctuation.separator.key-value.aeon" },
+            "6": { "name": "punctuation.definition.string.begin.aeon" },
+            "7": { "name": "variable.parameter.aeon" },
+            "8": { "name": "punctuation.definition.string.end.aeon" },
+            "9": { "name": "text.html.aeon" },
+            "10": { "name": "punctuation.definition.tag.end.aeon" }
+          }
+        },
+        {
+          "name": "tag.aeon.include",
+          "match": "(<#)(INCLUDE)(\\s+)(filename|type)(=)(['\"])([^'\"]+)(['\"])([^>]*)(>)",
+          "captures": {
+            "1": { "name": "punctuation.definition.tag.begin.aeon" },
+            "2": { "name": "entity.name.tag.aeon" },
+            "3": { "name": "text.html.aeon" },
+            "4": { "name": "entity.other.attribute-name.aeon" },
+            "5": { "name": "punctuation.separator.key-value.aeon" },
+            "6": { "name": "punctuation.definition.string.begin.aeon" },
+            "7": { "name": "string.quoted.aeon.include-path" },
+            "8": { "name": "punctuation.definition.string.end.aeon" },
+            "9": { "name": "text.html.aeon" },
+            "10": { "name": "punctuation.definition.tag.end.aeon" }
+          }
+        },
+        {
+          "name": "tag.aeon.status",
+          "match": "(<#)(STATUS)(\\s*)(>)",
+          "captures": {
+            "1": { "name": "punctuation.definition.tag.begin.aeon" },
+            "2": { "name": "entity.name.tag.aeon" },
+            "3": { "name": "text.html.aeon" },
+            "4": { "name": "punctuation.definition.tag.end.aeon" }
+          }
+        },
+        {
+          "name": "tag.aeon.error",
+          "match": "(<#)(ERROR)(\\s+)(name)(=)(['\"])([^'\"]+)(['\"])(\\s*)(>)",
+          "captures": {
+            "1": { "name": "punctuation.definition.tag.begin.aeon" },
+            "2": { "name": "entity.name.tag.aeon.error" },
+            "3": { "name": "text.html.aeon" },
+            "4": { "name": "entity.other.attribute-name.aeon" },
+            "5": { "name": "punctuation.separator.key-value.aeon" },
+            "6": { "name": "punctuation.definition.string.begin.aeon" },
+            "7": { "name": "variable.parameter.error.aeon" },
+            "8": { "name": "punctuation.definition.string.end.aeon" },
+            "9": { "name": "text.html.aeon" },
+            "10": { "name": "punctuation.definition.tag.end.aeon" }
+          }
+        },
+        {
+          "name": "tag.aeon.option",
+          "begin": "(<#)(OPTION)(\\s+)",
+          "beginCaptures": {
+            "1": { "name": "punctuation.definition.tag.begin.aeon" },
+            "2": { "name": "entity.name.tag.aeon" },
+            "3": { "name": "text.html.aeon" }
+          },
+          "end": "(>)",
+          "endCaptures": {
+            "1": { "name": "punctuation.definition.tag.end.aeon" }
+          },
+          "patterns": [
+            {
+              "include": "#tag-attributes"
+            }
+          ]
+        },
+        {
+          "name": "tag.aeon.table",
+          "begin": "(<#)(TABLE)(\\s+)",
+          "beginCaptures": {
+            "1": { "name": "punctuation.definition.tag.begin.aeon" },
+            "2": { "name": "entity.name.tag.aeon" },
+            "3": { "name": "text.html.aeon" }
+          },
+          "end": "(>)",
+          "endCaptures": {
+            "1": { "name": "punctuation.definition.tag.end.aeon" }
+          },
+          "patterns": [
+            {
+              "include": "#tag-attributes"
+            }
+          ]
+        },
+        {
+          "name": "tag.aeon.conditional",
+          "begin": "(<#)(CONDITIONAL)(\\s+)",
+          "beginCaptures": {
+            "1": { "name": "punctuation.definition.tag.begin.aeon" },
+            "2": { "name": "entity.name.tag.aeon" },
+            "3": { "name": "text.html.aeon" }
+          },
+          "end": "(>)",
+          "endCaptures": {
+            "1": { "name": "punctuation.definition.tag.end.aeon" }
+          },
+          "patterns": [
+            {
+              "include": "#tag-attributes"
+            }
+          ]
+        },
+        {
+          "name": "tag.aeon.user",
+          "match": "(<#)(USER)(\\s+)(field)(=)(['\"])([^'\"]+)(['\"])([^>]*)(>)",
+          "captures": {
+            "1": { "name": "punctuation.definition.tag.begin.aeon" },
+            "2": { "name": "entity.name.tag.aeon" },
+            "3": { "name": "text.html.aeon" },
+            "4": { "name": "entity.other.attribute-name.aeon" },
+            "5": { "name": "punctuation.separator.key-value.aeon" },
+            "6": { "name": "punctuation.definition.string.begin.aeon" },
+            "7": { "name": "variable.parameter.aeon" },
+            "8": { "name": "punctuation.definition.string.end.aeon" },
+            "9": { "name": "text.html.aeon" },
+            "10": { "name": "punctuation.definition.tag.end.aeon" }
+          }
+        },
+        {
+          "name": "tag.aeon.activity",
+          "match": "(<#)(ACTIVITY)(\\s+)(field)(=)(['\"])([^'\"]+)(['\"])([^>]*)(>)",
+          "captures": {
+            "1": { "name": "punctuation.definition.tag.begin.aeon" },
+            "2": { "name": "entity.name.tag.aeon" },
+            "3": { "name": "text.html.aeon" },
+            "4": { "name": "entity.other.attribute-name.aeon" },
+            "5": { "name": "punctuation.separator.key-value.aeon" },
+            "6": { "name": "punctuation.definition.string.begin.aeon" },
+            "7": { "name": "variable.parameter.aeon" },
+            "8": { "name": "punctuation.definition.string.end.aeon" },
+            "9": { "name": "text.html.aeon" },
+            "10": { "name": "punctuation.definition.tag.end.aeon" }
+          }
+        },
+        {
+          "name": "tag.aeon.formstate",
+          "match": "(<#)(FORMSTATE)(\\s*)(>)",
+          "captures": {
+            "1": { "name": "punctuation.definition.tag.begin.aeon" },
+            "2": { "name": "entity.name.tag.aeon" },
+            "3": { "name": "text.html.aeon" },
+            "4": { "name": "punctuation.definition.tag.end.aeon" }
+          }
+        },
+        {
+          "name": "tag.aeon.action",
+          "match": "(<#)(ACTION)(\\s+)([^>]+)(>)",
+          "captures": {
+            "1": { "name": "punctuation.definition.tag.begin.aeon" },
+            "2": { "name": "entity.name.tag.aeon" },
+            "3": { "name": "text.html.aeon" },
+            "4": { "name": "meta.tag.attributes.aeon" },
+            "5": { "name": "punctuation.definition.tag.end.aeon" }
+          }
+        },
+        {
+          "name": "tag.aeon.replace",
+          "begin": "(<#)(REPLACE)(\\s+)",
+          "beginCaptures": {
+            "1": { "name": "punctuation.definition.tag.begin.aeon" },
+            "2": { "name": "entity.name.tag.aeon" },
+            "3": { "name": "text.html.aeon" }
+          },
+          "end": "(>)",
+          "endCaptures": {
+            "1": { "name": "punctuation.definition.tag.end.aeon" }
+          },
+          "patterns": [
+            {
+              "include": "#tag-attributes"
+            }
+          ]
+        },
+        {
+          "name": "tag.aeon.session",
+          "match": "(<#)(SESSION)(\\s+)(name)(=)(['\"])([^'\"]+)(['\"])(\\s*)(>)",
+          "captures": {
+            "1": { "name": "punctuation.definition.tag.begin.aeon" },
+            "2": { "name": "entity.name.tag.aeon" },
+            "3": { "name": "text.html.aeon" },
+            "4": { "name": "entity.other.attribute-name.aeon" },
+            "5": { "name": "punctuation.separator.key-value.aeon" },
+            "6": { "name": "punctuation.definition.string.begin.aeon" },
+            "7": { "name": "variable.parameter.aeon" },
+            "8": { "name": "punctuation.definition.string.end.aeon" },
+            "9": { "name": "text.html.aeon" },
+            "10": { "name": "punctuation.definition.tag.end.aeon" }
+          }
+        },
+        {
+          "name": "tag.aeon.cookie",
+          "match": "(<#)(COOKIE)(\\s+)(name)(=)(['\"])([^'\"]+)(['\"])(\\s*)(>)",
+          "captures": {
+            "1": { "name": "punctuation.definition.tag.begin.aeon" },
+            "2": { "name": "entity.name.tag.aeon" },
+            "3": { "name": "text.html.aeon" },
+            "4": { "name": "entity.other.attribute-name.aeon" },
+            "5": { "name": "punctuation.separator.key-value.aeon" },
+            "6": { "name": "punctuation.definition.string.begin.aeon" },
+            "7": { "name": "variable.parameter.aeon" },
+            "8": { "name": "punctuation.definition.string.end.aeon" },
+            "9": { "name": "text.html.aeon" },
+            "10": { "name": "punctuation.definition.tag.end.aeon" }
+          }
+        },
+        {
+          "name": "tag.aeon.generic",
+          "match": "(<#)([A-Z]+)([^>]*)(>)",
+          "captures": {
+            "1": { "name": "punctuation.definition.tag.begin.aeon" },
+            "2": { "name": "entity.name.tag.aeon" },
+            "3": { "name": "meta.tag.attributes.aeon" },
+            "4": { "name": "punctuation.definition.tag.end.aeon" }
+          }
+        }
+      ]
+    },
+    "tag-attributes": {
+      "patterns": [
+        {
+          "match": "\\b(\\w+)(=)(['\"])([^'\"]*)(\\3)",
+          "captures": {
+            "1": { "name": "entity.other.attribute-name.aeon" },
+            "2": { "name": "punctuation.separator.key-value.aeon" },
+            "3": { "name": "punctuation.definition.string.begin.aeon" },
+            "4": { "name": "string.quoted.aeon" },
+            "5": { "name": "punctuation.definition.string.end.aeon" }
+          }
+        }
+      ]
+    }
+  }
+}

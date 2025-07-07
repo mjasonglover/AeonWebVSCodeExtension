@@ -1,0 +1,232 @@
+{
+  "Aeon Form Template": {
+    "prefix": "aeon-form",
+    "body": [
+      "<!DOCTYPE html>",
+      "<html lang=\"en-US\">",
+      "<head>",
+      "    <title>Aeon - ${1:Page Title}</title>",
+      "    <#INCLUDE filename=\"include_head.html\">",
+      "</head>",
+      "<body>",
+      "    <#INCLUDE filename=\"include_header.html\">",
+      "    <#INCLUDE filename=\"include_nav.html\">",
+      "    <div class=\"container\">",
+      "        <main id=\"content\" aria-label=\"Content\">",
+      "            <form action=\"aeon.dll\" method=\"post\" name=\"${2:FormName}\">",
+      "                <input type=\"hidden\" name=\"AeonForm\" value=\"${2:FormName}\">",
+      "                <h2>${3:Form Title}</h2>",
+      "                <div id=\"statusLine\"><#STATUS></div>",
+      "                $0",
+      "            </form>",
+      "        </main>",
+      "        <#INCLUDE filename=\"include_footer.html\">",
+      "    </div>",
+      "</body>",
+      "</html>"
+    ],
+    "description": "Basic Aeon form page template"
+  },
+  
+  "Aeon Request Form": {
+    "prefix": "aeon-request-form",
+    "body": [
+      "<form action=\"aeon.dll\" method=\"post\" name=\"${1:DefaultRequest}\" id=\"RequestForm\">",
+      "    <input type=\"hidden\" name=\"AeonForm\" value=\"${1:DefaultRequest}\">",
+      "    <input type=\"hidden\" name=\"TransactionLink\" value=\"<#PARAM name='TransactionLink'>\">",
+      "    <input type=\"hidden\" name=\"ReferenceNumber\" value=\"<#PARAM name='ReferenceNumber'>\">",
+      "    <input type=\"hidden\" name=\"ItemNumber\" value=\"<#PARAM name='ItemNumber'>\">",
+      "    <input type=\"hidden\" name=\"RequestType\" value=\"${2:Loan}\">",
+      "    ",
+      "    <h2>${3:Request Title}</h2>",
+      "    <div id=\"statusLine\"><#STATUS></div>",
+      "    ",
+      "    $0",
+      "    ",
+      "    <#INCLUDE filename=\"include_request_buttons.html\">",
+      "</form>"
+    ],
+    "description": "Aeon request form with hidden fields"
+  },
+  
+  "Form Field": {
+    "prefix": "aeon-field",
+    "body": [
+      "<div class=\"form-group col-md-${1:6}\">",
+      "    <label for=\"${2:FieldName}\">",
+      "        <span class=\"<#ERROR name='ERROR${2:FieldName}'>\">",
+      "            ${3:Field Label}",
+      "        </span>",
+      "        ${4:<span class=\"req\">(required)</span>}",
+      "    </label>",
+      "    <input type=\"${5:text}\" class=\"form-control\" name=\"${2:FieldName}\" id=\"${2:FieldName}\" value=\"<#PARAM name='${2:FieldName}'>\" ${6:required}>",
+      "</div>"
+    ],
+    "description": "Form field with Bootstrap styling and error handling"
+  },
+  
+  "Textarea Field": {
+    "prefix": "aeon-textarea",
+    "body": [
+      "<div class=\"form-group col-md-${1:8}\">",
+      "    <label for=\"${2:FieldName}\">",
+      "        <span class=\"<#ERROR name='ERROR${2:FieldName}'>\">",
+      "            ${3:Field Label}",
+      "        </span>",
+      "    </label>",
+      "    <textarea class=\"form-control\" name=\"${2:FieldName}\" id=\"${2:FieldName}\" rows=\"${4:3}\" cols=\"40\"><#PARAM name=\"${2:FieldName}\"></textarea>",
+      "</div>"
+    ],
+    "description": "Textarea field with error handling"
+  },
+  
+  "Select Dropdown": {
+    "prefix": "aeon-select",
+    "body": [
+      "<div class=\"form-group col-md-${1:6}\">",
+      "    <label for=\"${2:FieldName}\">",
+      "        <span class=\"<#ERROR name='ERROR${2:FieldName}'>\">",
+      "            ${3:Field Label}",
+      "        </span>",
+      "    </label>",
+      "    <select class=\"custom-select mr-sm-2\" id=\"${2:FieldName}\" name=\"${2:FieldName}\" size=\"1\">",
+      "        <#OPTION name=\"${4:GroupName}\" selectedValue=\"<#PARAM name='${2:FieldName}'>\" defaultName=\"${5:Choose...}\" defaultValue=\"\">",
+      "    </select>",
+      "</div>"
+    ],
+    "description": "Select dropdown with OPTION tag"
+  },
+  
+  "Include Header Set": {
+    "prefix": "aeon-includes",
+    "body": [
+      "<#INCLUDE filename=\"include_head.html\">",
+      "<#INCLUDE filename=\"include_header.html\">",
+      "<#INCLUDE filename=\"include_nav.html\">"
+    ],
+    "description": "Common include files for page header"
+  },
+  
+  "Status Line": {
+    "prefix": "aeon-status",
+    "body": [
+      "<div id=\"statusLine\" class=\"${1:alert alert-info}\"><#STATUS></div>"
+    ],
+    "description": "Status message display"
+  },
+  
+  "Table Display": {
+    "prefix": "aeon-table",
+    "body": [
+      "<#TABLE ",
+      "    name=\"${1|ViewOutstandingRequests,ViewAllRequests,ViewRequestHistory,ViewCheckedOutItems,ViewSearchResults|}\"",
+      "    class=\"${2:table table-striped}\"",
+      "    id=\"${3:request-table}\"",
+      "    HeaderText=\"${4:}\"",
+      "    NoDataMessage=\"${5:No records found}\"",
+      ">"
+    ],
+    "description": "Aeon table display tag"
+  },
+  
+  "Conditional Display": {
+    "prefix": "aeon-conditional",
+    "body": [
+      "<#CONDITIONAL ",
+      "    type=\"${1|CustomizationKey,ConvertingToCopy,IsValidSession|}\"",
+      "    test=\"${2:value}\"",
+      "    true=\"${3:Display when true}\"",
+      "    false=\"${4:Display when false}\"",
+      ">"
+    ],
+    "description": "Conditional content display"
+  },
+  
+  "Item Information Section": {
+    "prefix": "aeon-item-section",
+    "body": [
+      "<section name=\"item-info\">",
+      "    <h3 class=\"section-header\">Item Information</h3>",
+      "    ",
+      "    <div class=\"form-group col-md-8\">",
+      "        <label for=\"ItemTitle\">",
+      "            <span class=\"<#ERROR name='ERRORItemTitle'>\">Title</span>",
+      "            <span class=\"req\">(required)</span>",
+      "        </label>",
+      "        <textarea class=\"form-control\" name=\"ItemTitle\" id=\"ItemTitle\" rows=\"2\" required><#PARAM name=\"ItemTitle\"></textarea>",
+      "    </div>",
+      "    ",
+      "    <div class=\"form-group col-md-8\">",
+      "        <label for=\"ItemAuthor\">",
+      "            <span class=\"<#ERROR name='ERRORItemAuthor'>\">Author/Creator</span>",
+      "        </label>",
+      "        <input type=\"text\" class=\"form-control\" name=\"ItemAuthor\" id=\"ItemAuthor\" value=\"<#PARAM name='ItemAuthor'>\">",
+      "    </div>",
+      "    ",
+      "    <div class=\"form-group col-md-5\">",
+      "        <label for=\"CallNumber\">",
+      "            <span class=\"<#ERROR name='ERRORCallNumber'>\">Call Number</span>",
+      "        </label>",
+      "        <input type=\"text\" class=\"form-control\" name=\"CallNumber\" id=\"CallNumber\" value=\"<#PARAM name='CallNumber'>\">",
+      "    </div>",
+      "    ",
+      "    <div class=\"form-group col-md-5\">",
+      "        <label for=\"Location\">",
+      "            <span class=\"<#ERROR name='ERRORLocation'>\">Location</span>",
+      "        </label>",
+      "        <input type=\"text\" class=\"form-control\" name=\"Location\" id=\"Location\" value=\"<#PARAM name='Location'>\">",
+      "    </div>",
+      "</section>"
+    ],
+    "description": "Complete item information section"
+  },
+  
+  "Request Buttons": {
+    "prefix": "aeon-buttons",
+    "body": [
+      "<div class=\"mt-4\">",
+      "    <button type=\"submit\" name=\"SubmitButton\" value=\"Submit\" class=\"btn btn-primary\">Submit Request</button>",
+      "    <button type=\"submit\" name=\"CancelButton\" value=\"Cancel\" class=\"btn btn-secondary\" formnovalidate>Cancel</button>",
+      "</div>"
+    ],
+    "description": "Submit and cancel buttons for forms"
+  },
+  
+  "Hidden Form Fields": {
+    "prefix": "aeon-hidden",
+    "body": [
+      "<input type=\"hidden\" name=\"AeonForm\" value=\"${1:FormName}\">",
+      "<input type=\"hidden\" name=\"TransactionLink\" value=\"<#PARAM name='TransactionLink'>\">",
+      "<input type=\"hidden\" name=\"ReferenceNumber\" value=\"<#PARAM name='ReferenceNumber'>\">",
+      "<input type=\"hidden\" name=\"ItemNumber\" value=\"<#PARAM name='ItemNumber'>\">",
+      "<input type=\"hidden\" name=\"RequestType\" value=\"${2:Loan}\">"
+    ],
+    "description": "Common hidden fields for Aeon forms"
+  },
+  
+  "User Information Display": {
+    "prefix": "aeon-user-info",
+    "body": [
+      "<div class=\"user-info\">",
+      "    <p><strong>Name:</strong> <#USER field=\"FirstName\"> <#USER field=\"LastName\"></p>",
+      "    <p><strong>Username:</strong> <#USER field=\"Username\"></p>",
+      "    <p><strong>Email:</strong> <#USER field=\"EmailAddress\"></p>",
+      "    <p><strong>Department:</strong> <#USER field=\"Department\"></p>",
+      "</div>"
+    ],
+    "description": "Display user information"
+  },
+  
+  "Activity Information": {
+    "prefix": "aeon-activity",
+    "body": [
+      "<div class=\"activity-info\">",
+      "    <h4><#ACTIVITY field=\"Name\"></h4>",
+      "    <p><#ACTIVITY field=\"Description\"></p>",
+      "    <p><strong>Date:</strong> <#ACTIVITY field=\"BeginDate\" display=\"ISO8601\"></p>",
+      "    <p><strong>Location:</strong> <#ACTIVITY field=\"Location\"></p>",
+      "</div>"
+    ],
+    "description": "Display activity information"
+  }
+}
