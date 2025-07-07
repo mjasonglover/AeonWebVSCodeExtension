@@ -312,5 +312,5 @@ Edit `.vscode/aeon-mock-data.json` in your workspace:
 ---
 
 **Version**: 0.0.1  
-**Last Updated**: January 2025  
+**Last Updated**: July 2025  
 **Repository**: https://github.com/mjasonglover/AeonWebVSCodeExtension
