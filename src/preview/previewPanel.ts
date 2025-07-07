@@ -157,7 +157,12 @@ export class PreviewPanel {
                                 'ScheduledDate': { 
                                     scheduledDate: null,
                                     allowScheduling: false,
-                                    dates: []
+                                    dates: [],
+                                    minDate: null,
+                                    maxDate: null,
+                                    excludedDates: [],
+                                    message: '',
+                                    status: 'success'
                                 }
                             };
                             
@@ -223,10 +228,28 @@ export class PreviewPanel {
                                         }
                                     }
                                     
-                                    return Promise.resolve(new Response(JSON.stringify(mockData), {
+                                    // Create a more complete Response object
+                                    const mockResponse = new Response(JSON.stringify(mockData), {
                                         status: 200,
-                                        headers: { 'Content-Type': 'application/json' }
-                                    }));
+                                        statusText: 'OK',
+                                        headers: { 
+                                            'Content-Type': 'application/json',
+                                            'Content-Length': JSON.stringify(mockData).length.toString()
+                                        }
+                                    });
+                                    
+                                    // Ensure the response has expected methods
+                                    const originalJson = mockResponse.json.bind(mockResponse);
+                                    mockResponse.json = function() {
+                                        return originalJson().catch(() => mockData);
+                                    };
+                                    
+                                    const originalText = mockResponse.text.bind(mockResponse);
+                                    mockResponse.text = function() {
+                                        return originalText().catch(() => JSON.stringify(mockData));
+                                    };
+                                    
+                                    return Promise.resolve(mockResponse);
                                 }
                                 return originalFetch.call(this, url, ...args);
                             };
