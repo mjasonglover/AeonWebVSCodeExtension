@@ -114,6 +114,15 @@ function setupControlButtons() {
         });
     }
     
+    // Zoom select
+    const zoomSelect = document.getElementById('zoom-select');
+    if (zoomSelect) {
+        zoomSelect.addEventListener('change', (e) => {
+            const factor = parseFloat(e.target.value);
+            setZoom(factor);
+        });
+    }
+    
     // Error close button
     const errorCloseBtn = document.getElementById('error-close-btn');
     if (errorCloseBtn) {
@@ -313,6 +322,9 @@ window.addEventListener('message', event => {
         case 'showMockDataEditor':
             showMockDataEditor();
             break;
+        case 'setZoom':
+            setZoom(message.factor);
+            break;
     }
 });
 
@@ -339,6 +351,23 @@ function setViewport(device) {
         if (wrapper) {
             wrapper.style.display = 'flex';
             wrapper.style.justifyContent = 'center';
+        }
+    }
+}
+
+function setZoom(factor) {
+    const content = document.getElementById('preview-content');
+    if (content) {
+        content.style.transform = `scale(${factor})`;
+        content.style.transformOrigin = 'top center';
+        
+        // Adjust wrapper to account for scaling
+        const wrapper = document.getElementById('preview-wrapper');
+        if (wrapper) {
+            // Calculate the scaled dimensions to adjust wrapper size
+            const rect = content.getBoundingClientRect();
+            const scaledHeight = rect.height;
+            wrapper.style.height = scaledHeight + 'px';
         }
     }
 }

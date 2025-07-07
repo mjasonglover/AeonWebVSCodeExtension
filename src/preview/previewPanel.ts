@@ -155,8 +155,12 @@ export class PreviewPanel {
                             const mockResponses = {
                                 'webAlerts': { alerts: [] },
                                 'ScheduledDate': { 
+                                    DefaultSchedule: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
+                                    MinimumDays: 1,
+                                    MaximumDays: 30,
+                                    ScheduledClosures: [],
                                     scheduledDate: null,
-                                    allowScheduling: false,
+                                    allowScheduling: true,
                                     dates: [],
                                     minDate: null,
                                     maxDate: null,
@@ -335,9 +339,12 @@ export class PreviewPanel {
                     <span class="codicon codicon-refresh"></span> Refresh
                 </button>
                 <select id="device-select" class="preview-control">
-                    <option value="Desktop (1920x1080)" ${currentDevice.name === 'Desktop (1920x1080)' ? 'selected' : ''}>Desktop</option>
-                    <option value="iPad Pro" ${currentDevice.name === 'iPad Pro' ? 'selected' : ''}>iPad Pro</option>
-                    <option value="iPhone 12" ${currentDevice.name === 'iPhone 12' ? 'selected' : ''}>iPhone 12</option>
+                    <option value="Desktop (1920x1080)" ${currentDevice.name === 'Desktop (1920x1080)' ? 'selected' : ''}>Desktop (1920x1080)</option>
+                    <option value="Desktop (1366x768)" ${currentDevice.name === 'Desktop (1366x768)' ? 'selected' : ''}>Desktop (1366x768)</option>
+                    <option value="iPad Pro 12.9&quot;" ${currentDevice.name === 'iPad Pro 12.9"' ? 'selected' : ''}>iPad Pro</option>
+                    <option value="iPad Air" ${currentDevice.name === 'iPad Air' ? 'selected' : ''}>iPad Air</option>
+                    <option value="iPhone 14 Pro" ${currentDevice.name === 'iPhone 14 Pro' ? 'selected' : ''}>iPhone 14 Pro</option>
+                    <option value="iPhone SE" ${currentDevice.name === 'iPhone SE' ? 'selected' : ''}>iPhone SE</option>
                     <option value="Custom" ${currentDevice.name === 'Custom' ? 'selected' : ''}>Custom Size</option>
                 </select>
                 <select id="tag-viz-select" class="preview-control">
@@ -348,6 +355,13 @@ export class PreviewPanel {
                 <button id="mock-data-btn" class="preview-control">
                     <span class="codicon codicon-edit"></span> Mock Data
                 </button>
+                <select id="zoom-select" class="preview-control">
+                    <option value="0.5">50%</option>
+                    <option value="0.75">75%</option>
+                    <option value="1" selected>100%</option>
+                    <option value="1.25">125%</option>
+                    <option value="1.5">150%</option>
+                </select>
             </div>
         `;
     }
@@ -472,7 +486,8 @@ export class PreviewPanel {
     
     public async setDevice(device: string): Promise<void> {
         await this.viewportManager.setDevice(device);
-        await this.update();
+        // Don't update the entire preview, just send the viewport change
+        // await this.update();
     }
     
     public async setTagVisualization(mode: 'none' | 'highlight' | 'labels'): Promise<void> {
