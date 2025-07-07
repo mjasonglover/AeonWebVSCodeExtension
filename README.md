@@ -2,6 +2,47 @@
 
 Language support and development tools for Aeon web pages.
 
+## 🚀 Quick Start
+
+### 5-Minute Setup
+
+1. **Clone & Install**
+   ```bash
+   git clone https://github.com/mjasonglover/AeonWebVSCodeExtension.git
+   cd AeonWebVSCodeExtension
+   npm install
+   npm run compile
+   ```
+
+2. **Launch Extension**
+   - Open folder in VS Code
+   - Press `F5` to launch
+   - Open any `.html` file with Aeon tags
+
+3. **Start Preview**
+   - Right-click in editor → "Preview Aeon Page"
+   - Or press `Ctrl+Shift+P` → "Aeon: Preview Current Page"
+
+### Essential Aeon Tags
+
+```html
+<#PARAM name="ItemTitle">           <!-- Display field value -->
+<#USER field="Username">            <!-- User information -->
+<#INCLUDE filename="header.html">   <!-- Include file -->
+<#STATUS>                          <!-- Status messages -->
+<#ERROR field="ItemTitle">         <!-- Field errors -->
+<#TABLE name="Transactions">       <!-- Data tables -->
+<#CONDITIONAL test="HasAccess">    <!-- Conditional content -->
+```
+
+### Key Features to Try
+
+- **IntelliSense**: Type `<#` to see all tags
+- **Live Preview**: Switch between Desktop/iPad/iPhone views
+- **Tag Visualization**: Toggle between None/Highlight/Labels
+- **Quick Edits**: Shift+Click any blue field value to edit inline
+- **Navigation**: Ctrl+Click on include filenames to open them
+
 ## Features
 
 ### <� Syntax Highlighting
@@ -159,6 +200,42 @@ Access these commands from the Command Palette (Ctrl+Shift+P):
    - "Labels" mode displays tag names
    - "Flow" mode shows form structure
 
+### Tag Color Reference
+
+- 🔵 Blue: PARAM
+- 🟢 Green: INCLUDE  
+- 🔷 Cyan: STATUS
+- 🔴 Red: ERROR
+- 🟣 Purple: USER
+- 🟠 Orange: TABLE
+
+### Keyboard Shortcuts
+
+| Action | Windows/Linux | Mac |
+|--------|--------------|-----|
+| Open Preview | Ctrl+Shift+P → "Aeon: Preview" | Cmd+Shift+P → "Aeon: Preview" |
+| Go to Definition | Ctrl+Click | Cmd+Click |
+| Trigger Suggestions | Ctrl+Space | Cmd+Space |
+| Quick Fix | Ctrl+. | Cmd+. |
+
+### Test Scenarios
+
+1. **Basic Page Test**
+   - Open `DefaultRequest.html`
+   - Preview should show styled form
+   - Try different devices and zoom levels
+
+2. **Mock Data Test**  
+   - Click "Mock Data" button
+   - Change "TransactionNumber" 
+   - See it update in preview
+
+3. **Tag Visualization**
+   - Select "Highlight Tags"
+   - See colored borders on all Aeon tags
+   - Select "Show Tag Labels" 
+   - See tag types above each tag
+
 ## Supported Aeon Tags
 
 - **Display Tags**: `PARAM`, `STATUS`, `ERROR`, `USER`, `ACTIVITY`, `COPYRIGHT`
@@ -189,6 +266,21 @@ The extension provides IntelliSense for all standard Aeon database fields:
 - VS Code 1.74.0 or higher
 - HTML files containing Aeon tags
 
+## Troubleshooting
+
+### Common Issues
+
+- **No syntax highlighting?** → File must be .html/.htm
+- **Preview not styled?** → Check CSS file paths exist
+- **Can't see full mobile view?** → Use 50% zoom
+- **IntelliSense not working?** → Type `<#` to trigger
+
+### Debug Mode
+For developers debugging the extension:
+1. Open VS Code Developer Tools: Help → Toggle Developer Tools
+2. Check Console tab for errors
+3. Extension logs appear with [Extension Host] prefix
+
 ## Known Issues
 
 - Include file navigation works best when files are within the workspace
@@ -215,7 +307,13 @@ The extension provides IntelliSense for all standard Aeon database fields:
 
 ## Contributing
 
-Found a bug or have a feature request? Please open an issue on our GitHub repository.
+Found a bug or have a feature request? Please open an issue on our [GitHub repository](https://github.com/mjasonglover/AeonWebVSCodeExtension/issues).
+
+### Resources
+
+- **Full User Guide**: See [USER_GUIDE.md](USER_GUIDE.md) for comprehensive documentation
+- **Quick Reference**: See [QUICK_START.md](QUICK_START.md) for a condensed guide
+- **Report Issues**: [GitHub Issues](https://github.com/mjasonglover/AeonWebVSCodeExtension/issues)
 
 ## License
 
