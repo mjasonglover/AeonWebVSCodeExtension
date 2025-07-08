@@ -301,6 +301,12 @@ For developers debugging the extension:
 
 ## Release Notes
 
+### 0.2.1
+- **NEW: Explorer Context Menu** - Right-click HTML files in the file explorer to show preview
+- Updated command handling to support file URIs from explorer
+- Added packaged VSIX file for easy installation without npm
+- Updated README with installation instructions
+
 ### 0.2.0 - Stage 2: Live Preview & Visualization
 - **NEW: Live Preview Panel** - Real-time preview with split view
 - **NEW: Mock Data System** - Built-in profiles and custom data management
