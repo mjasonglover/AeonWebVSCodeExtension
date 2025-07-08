@@ -67,14 +67,21 @@ export function registerCommands(context: vscode.ExtensionContext) {
     
     // Show Preview Command
     context.subscriptions.push(
-        vscode.commands.registerCommand('aeon.showPreview', () => {
-            const editor = vscode.window.activeTextEditor;
-            if (!editor) {
-                vscode.window.showInformationMessage('No active editor');
-                return;
+        vscode.commands.registerCommand('aeon.showPreview', async (uri?: vscode.Uri) => {
+            if (uri) {
+                // Called from explorer context menu
+                const document = await vscode.workspace.openTextDocument(uri);
+                previewManager.showPreview(document);
+            } else {
+                // Called from editor or command palette
+                const editor = vscode.window.activeTextEditor;
+                if (!editor) {
+                    vscode.window.showInformationMessage('No active editor');
+                    return;
+                }
+                
+                previewManager.showPreview(editor.document);
             }
-            
-            previewManager.showPreview(editor.document);
         })
     );
     

@@ -2,7 +2,7 @@
   "name": "aeon-vscode",
   "displayName": "Aeon Development Tools",
   "description": "Language support and development tools for Aeon web pages",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "publisher": "atlas-systems",
   "engines": {
     "vscode": "^1.74.0"
@@ -18,6 +18,10 @@
     "archives",
     "special collections"
   ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/atlas-systems/aeon-vscode"
+  },
   "activationEvents": [
     "onLanguage:html",
     "workspaceContains:**/*.html"
@@ -162,6 +166,13 @@
         }
       ],
       "editor/title": [
+        {
+          "when": "resourceExtname == .html",
+          "command": "aeon.showPreview",
+          "group": "navigation"
+        }
+      ],
+      "explorer/context": [
         {
           "when": "resourceExtname == .html",
           "command": "aeon.showPreview",

@@ -4,7 +4,24 @@ Language support and development tools for Aeon web pages.
 
 ## 🚀 Quick Start
 
-### 5-Minute Setup
+### Installation from VSIX
+
+1. **Download the Extension**
+   - Download `aeon-vscode-0.2.1.vsix` from this repository
+
+2. **Install in VS Code**
+   - Open VS Code
+   - Press `Cmd+Shift+P` (Mac) or `Ctrl+Shift+P` (Windows/Linux)
+   - Type "Extensions: Install from VSIX..."
+   - Select the downloaded `aeon-vscode-0.2.1.vsix` file
+   - Reload VS Code when prompted
+
+3. **Start Using**
+   - Open any `.html` file with Aeon tags
+   - Right-click in editor or file explorer → "Aeon: Show Preview"
+   - Or press `Cmd+Shift+P` → "Aeon: Show Preview"
+
+### Development Setup
 
 1. **Clone & Install**
    ```bash
@@ -18,10 +35,6 @@ Language support and development tools for Aeon web pages.
    - Open folder in VS Code
    - Press `F5` to launch
    - Open any `.html` file with Aeon tags
-
-3. **Start Preview**
-   - Right-click in editor → "Preview Aeon Page"
-   - Or press `Ctrl+Shift+P` → "Aeon: Preview Current Page"
 
 ### Essential Aeon Tags
 
