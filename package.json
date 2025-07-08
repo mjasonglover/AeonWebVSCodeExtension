@@ -2,7 +2,7 @@
   "name": "aeon-vscode",
   "displayName": "Aeon Development Tools",
   "description": "Language support and development tools for Aeon web pages",
-  "version": "0.2.0",
+  "version": "0.4.0",
   "publisher": "atlas-systems",
   "engines": {
     "vscode": "^1.74.0"
@@ -27,8 +27,14 @@
     "languages": [
       {
         "id": "aeon-html",
-        "aliases": ["Aeon HTML", "aeon"],
-        "extensions": [".html", ".htm"],
+        "aliases": [
+          "Aeon HTML",
+          "aeon"
+        ],
+        "extensions": [
+          ".html",
+          ".htm"
+        ],
         "configuration": "./language-configuration.json"
       }
     ],
@@ -37,7 +43,9 @@
         "language": "aeon-html",
         "scopeName": "text.html.aeon",
         "path": "./syntaxes/aeon.tmLanguage.json",
-        "injectTo": ["text.html.basic"],
+        "injectTo": [
+          "text.html.basic"
+        ],
         "embeddedLanguages": {
           "source.css": "css",
           "source.js": "javascript"
@@ -65,7 +73,10 @@
         },
         "aeon.includeSearchPaths": {
           "type": "array",
-          "default": [".", "includes"],
+          "default": [
+            ".",
+            "includes"
+          ],
           "description": "Paths to search for include files"
         },
         "aeon.enableSnippets": {
@@ -81,19 +92,32 @@
         "aeon.preview.defaultDevice": {
           "type": "string",
           "default": "Desktop (1920x1080)",
-          "enum": ["Desktop (1920x1080)", "iPad Pro", "iPhone 12", "Custom"],
+          "enum": [
+            "Desktop (1920x1080)",
+            "iPad Pro",
+            "iPhone 12",
+            "Custom"
+          ],
           "description": "Default device for responsive preview"
         },
         "aeon.preview.showTagOverlay": {
           "type": "string",
           "default": "none",
-          "enum": ["none", "highlight", "labels"],
+          "enum": [
+            "none",
+            "highlight",
+            "labels"
+          ],
           "description": "Tag visualization mode in preview"
         },
         "aeon.preview.theme": {
           "type": "string",
           "default": "default",
-          "enum": ["default", "dark", "highContrast"],
+          "enum": [
+            "default",
+            "dark",
+            "highContrast"
+          ],
           "description": "Preview theme"
         },
         "aeon.mockData.defaultProfile": {
@@ -146,6 +170,50 @@
       {
         "command": "aeon.changeMockDataProfile",
         "title": "Aeon: Change Mock Data Profile"
+      },
+      {
+        "command": "aeon.openFormBuilder",
+        "title": "Aeon: Open Visual Form Builder",
+        "icon": "$(edit)"
+      },
+      {
+        "command": "aeon.listForms",
+        "title": "Aeon: List Saved Forms"
+      },
+      {
+        "command": "aeon.importForm",
+        "title": "Aeon: Import Form Design"
+      },
+      {
+        "command": "aeon.openComponentLibrary",
+        "title": "Aeon: Open Component Library",
+        "icon": "$(extensions)"
+      },
+      {
+        "command": "aeon.listInstalledComponents",
+        "title": "Aeon: List Installed Components"
+      },
+      {
+        "command": "aeon.createFromTemplate",
+        "title": "Aeon: Create from Template",
+        "icon": "$(file-code)"
+      },
+      {
+        "command": "aeon.startMigration",
+        "title": "Aeon: Start Page Migration",
+        "icon": "$(sync)"
+      },
+      {
+        "command": "aeon.newMigrationProject",
+        "title": "Aeon: New Migration Project"
+      },
+      {
+        "command": "aeon.openMigrationProject",
+        "title": "Aeon: Open Migration Project"
+      },
+      {
+        "command": "aeon.importMigrationProject",
+        "title": "Aeon: Import Migration Project"
       }
     ],
     "menus": {
@@ -193,17 +261,22 @@
     "test": "node ./out/test/runTest.js"
   },
   "devDependencies": {
-    "@types/vscode": "^1.74.0",
+    "@types/diff": "^5.0.3",
     "@types/glob": "^8.0.0",
+    "@types/jsdom": "^21.1.7",
     "@types/mocha": "^10.0.1",
     "@types/node": "16.x",
+    "@types/vscode": "^1.74.0",
     "@typescript-eslint/eslint-plugin": "^5.45.0",
     "@typescript-eslint/parser": "^5.45.0",
+    "@vscode/test-electron": "^2.2.0",
     "eslint": "^8.28.0",
     "glob": "^8.0.3",
     "mocha": "^10.1.0",
-    "typescript": "^4.9.3",
-    "@vscode/test-electron": "^2.2.0"
+    "typescript": "^4.9.3"
   },
-  "dependencies": {}
+  "dependencies": {
+    "diff": "^5.1.0",
+    "jsdom": "^20.0.3"
+  }
 }
