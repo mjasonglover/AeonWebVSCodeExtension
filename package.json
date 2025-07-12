@@ -2,7 +2,7 @@
   "name": "aeon-vscode",
   "displayName": "Aeon Development Tools",
   "description": "Language support and development tools for Aeon web pages",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "publisher": "atlas-systems",
   "engines": {
     "vscode": "^1.74.0"

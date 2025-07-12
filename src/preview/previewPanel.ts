@@ -149,6 +149,35 @@ export class PreviewPanel {
                     </style>
                     
                     <script nonce="${nonce}">
+                        // Override the initCookieConsent function to prevent cookie popup
+                        window.initCookieConsent = function() {
+                            return {
+                                run: function() {
+                                    console.log('Cookie consent disabled in preview');
+                                },
+                                show: function() {},
+                                hide: function() {},
+                                showSettings: function() {},
+                                hideSettings: function() {},
+                                accept: function() {},
+                                allowedCategory: function() { return true; },
+                                get: function() { return {}; },
+                                set: function() {},
+                                getUserPreferences: function() { 
+                                    return { 
+                                        accept_type: 'all',
+                                        accepted_categories: ['necessary'],
+                                        rejected_categories: []
+                                    };
+                                },
+                                loadScript: function(src, callback) { if(callback) callback(); },
+                                updateScripts: function() {},
+                                eraseCookies: function() {},
+                                validCookie: function() { return false; },
+                                getConfig: function() { return {}; }
+                            };
+                        };
+                        
                         // Intercept AJAX calls before any scripts load
                         (function() {
                             // Mock responses for different endpoints

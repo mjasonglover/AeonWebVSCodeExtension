@@ -7,13 +7,13 @@ Language support and development tools for Aeon web pages.
 ### Installation from VSIX
 
 1. **Download the Extension**
-   - Download `aeon-vscode-0.3.0.vsix` from this repository
+   - Download `aeon-vscode-0.3.1.vsix` from this repository
 
 2. **Install in VS Code**
    - Open VS Code
    - Press `Cmd+Shift+P` (Mac) or `Ctrl+Shift+P` (Windows/Linux)
    - Type "Extensions: Install from VSIX..."
-   - Select the downloaded `aeon-vscode-0.3.0.vsix` file
+   - Select the downloaded `aeon-vscode-0.3.1.vsix` file
    - Reload VS Code when prompted
 
 3. **Start Using**
@@ -300,6 +300,12 @@ For developers debugging the extension:
 - Some custom fields may show warnings even if they're valid in your Aeon installation
 
 ## Release Notes
+
+### 0.3.1
+- **ADDED: Auto-Accept Cookie Consent** - Cookie consent popups are now automatically disabled in the preview panel
+  - Prevents the cookie consent dialog from appearing on every preview
+  - Implemented by overriding the `initCookieConsent` function
+  - Improves development workflow by removing repetitive consent clicks
 
 ### 0.3.0
 - **FIXED: Tag Processing in Special Contexts** - Major improvements to tag handling
