@@ -7,13 +7,13 @@ Language support and development tools for Aeon web pages.
 ### Installation from VSIX
 
 1. **Download the Extension**
-   - Download `aeon-vscode-0.2.1.vsix` from this repository
+   - Download `aeon-vscode-0.3.0.vsix` from this repository
 
 2. **Install in VS Code**
    - Open VS Code
    - Press `Cmd+Shift+P` (Mac) or `Ctrl+Shift+P` (Windows/Linux)
    - Type "Extensions: Install from VSIX..."
-   - Select the downloaded `aeon-vscode-0.2.1.vsix` file
+   - Select the downloaded `aeon-vscode-0.3.0.vsix` file
    - Reload VS Code when prompted
 
 3. **Start Using**
@@ -300,6 +300,15 @@ For developers debugging the extension:
 - Some custom fields may show warnings even if they're valid in your Aeon installation
 
 ## Release Notes
+
+### 0.3.0
+- **FIXED: Tag Processing in Special Contexts** - Major improvements to tag handling
+  - Fixed OPTION tags with nested PARAM tags (dropdown values now render correctly)
+  - Fixed CHECKED tags in input elements (checkboxes display properly)
+  - Fixed tags inside textarea elements (no HTML in textarea content)
+  - Fixed ERROR tags in class attributes
+- **IMPROVED: Context-Aware Tag Processing** - Tags are now processed differently based on their location (normal HTML, inside attributes, or inside textareas)
+- **FIXED: Preview Panel Button Responsiveness** - Toolbar buttons now scale properly at smaller window widths
 
 ### 0.2.1
 - **NEW: Explorer Context Menu** - Right-click HTML files in the file explorer to show preview

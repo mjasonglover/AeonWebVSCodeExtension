@@ -211,7 +211,7 @@ class StatusTagHandler extends TagHandler {
 class ErrorTagHandler extends TagHandler {
     async process(attributes: string, context: ProcessingContext): Promise<string> {
         const attrs = this.parseAttributes(attributes);
-        const field = attrs.get('field');
+        const field = attrs.get('field') || attrs.get('name');
         
         if (field) {
             const errorMessages = context.mockData.getField('ErrorMessages') as Map<string, string> | undefined;
@@ -323,27 +323,72 @@ class OptionTagHandler extends TagHandler {
     async process(attributes: string, context: ProcessingContext): Promise<string> {
         const attrs = this.parseAttributes(attributes);
         const name = attrs.get('name');
-        const className = attrs.get('class') || 'form-select';
+        const selectedValue = attrs.get('selectedvalue') || '';
+        const defaultName = attrs.get('defaultname') || 'Select an option';
+        const defaultValue = attrs.get('defaultvalue') || '';
         
         if (!name) {
-            return '<select class="form-select"><option>No options available</option></select>';
+            return '<option value="">No options available</option>';
         }
         
         const options = this.getOptions(name, context);
-        const currentValue = context.mockData.getField(name) || '';
         
-        return `
-            <select name="${name}" class="${className}">
-                ${options.map(opt => 
-                    `<option value="${opt.value}" ${opt.value === currentValue ? 'selected' : ''}>${this.escapeHtml(opt.label)}</option>`
-                ).join('')}
-            </select>
-        `;
+        // If a default option is specified, add it first
+        let optionsHtml = '';
+        if (defaultName) {
+            optionsHtml += `<option value="${this.escapeHtml(defaultValue)}">${this.escapeHtml(defaultName)}</option>`;
+        }
+        
+        // Add the rest of the options
+        optionsHtml += options.map(opt => 
+            `<option value="${opt.value}" ${opt.value === selectedValue ? 'selected' : ''}>${this.escapeHtml(opt.label)}</option>`
+        ).join('');
+        
+        return optionsHtml;
     }
     
     private getOptions(optionName: string, context: ProcessingContext): Array<{value: string, label: string}> {
         // Return mock options based on option name
         switch (optionName.toLowerCase()) {
+            case 'statuses':
+                return [
+                    { value: 'Student', label: 'Student' },
+                    { value: 'Faculty', label: 'Faculty' },
+                    { value: 'Staff', label: 'Staff' },
+                    { value: 'Researcher', label: 'Researcher' },
+                    { value: 'Other', label: 'Other' }
+                ];
+            
+            case 'departments':
+                return [
+                    { value: 'History', label: 'History' },
+                    { value: 'English', label: 'English' },
+                    { value: 'Art History', label: 'Art History' },
+                    { value: 'Music', label: 'Music' },
+                    { value: 'Library Science', label: 'Library Science' },
+                    { value: 'Other', label: 'Other' }
+                ];
+            
+            case 'states':
+                return [
+                    { value: 'CA', label: 'California' },
+                    { value: 'NY', label: 'New York' },
+                    { value: 'TX', label: 'Texas' },
+                    { value: 'FL', label: 'Florida' },
+                    { value: 'WA', label: 'Washington' }
+                    // Add more states as needed
+                ];
+            
+            case 'countries':
+                return [
+                    { value: 'US', label: 'United States' },
+                    { value: 'CA', label: 'Canada' },
+                    { value: 'MX', label: 'Mexico' },
+                    { value: 'UK', label: 'United Kingdom' },
+                    { value: 'AU', label: 'Australia' }
+                    // Add more countries as needed
+                ];
+                
             case 'format':
                 return [
                     { value: 'PDF', label: 'PDF' },
@@ -391,6 +436,24 @@ class ConditionalTagHandler extends TagHandler {
     }
 }
 
+class CheckedTagHandler extends TagHandler {
+    async process(attributes: string, context: ProcessingContext): Promise<string> {
+        const attrs = this.parseAttributes(attributes);
+        const name = attrs.get('name');
+        const defaultValue = attrs.get('default') === 'true';
+        
+        if (!name) {
+            return defaultValue ? 'true' : '';
+        }
+        
+        const fieldValue = context.mockData.getField(name);
+        const isChecked = fieldValue === 'Yes' || fieldValue === true || (fieldValue === undefined && defaultValue);
+        
+        // Return a boolean-like string that the processor will convert to proper attribute
+        return isChecked ? 'true' : '';
+    }
+}
+
 class FormStateTagHandler extends TagHandler {
     async process(attributes: string, context: ProcessingContext): Promise<string> {
         const formState = context.mockData.getField('FormState') || 'Default';
@@ -416,6 +479,7 @@ export class TagProcessor {
             ['CONDITIONAL', new ConditionalTagHandler()],
             ['USER', new UserTagHandler()],
             ['ACTIVITY', new ActivityTagHandler()],
+            ['CHECKED', new CheckedTagHandler()],
             ['FORMSTATE', new FormStateTagHandler()],
         ]);
     }
@@ -477,74 +541,155 @@ export class TagProcessor {
     }
     
     public async processTags(content: string, context: ProcessingContext): Promise<string> {
-        const tagRegex = /<#(\w+)([^>]*)>/g;
+        // First, process nested tags from innermost to outermost
         let processed = content;
-        let match;
-        let tagIndex = 0;
+        let hasChanges = true;
+        let iterations = 0;
+        const maxIterations = 10; // Prevent infinite loops
         
-        const replacements: Array<{start: number, end: number, replacement: string, isInAttribute: boolean}> = [];
-        
-        while ((match = tagRegex.exec(content)) !== null) {
-            const tagName = match[1].toUpperCase();
-            const attributes = match[2];
-            const tagId = `tag-${tagIndex++}`;
+        while (hasChanges && iterations < maxIterations) {
+            hasChanges = false;
+            iterations++;
             
-            // Check if this tag is inside an HTML attribute or textarea
-            const beforeTag = content.substring(0, match.index);
-            const afterTag = content.substring(match.index + match[0].length);
-            const isInAttribute = this.isInsideAttributeOrTextarea(beforeTag, afterTag);
+            // Find all tags in the current content
+            const tagMatches: Array<{match: RegExpExecArray, start: number, end: number}> = [];
+            const tagRegex = /<#(\w+)([^>]*)>/g;
+            let match;
             
-            const handler = this.tagHandlers.get(tagName);
-            if (handler) {
-                try {
-                    const replacement = await handler.process(attributes, context);
-                    
-                    // Only wrap with span if not inside an attribute or textarea
-                    const finalReplacement = isInAttribute ? 
-                        this.extractTextContent(replacement) : 
-                        `<span class="aeon-tag" data-tag="${tagName}" data-tag-id="${tagId}">${replacement}</span>`;
+            while ((match = tagRegex.exec(processed)) !== null) {
+                tagMatches.push({
+                    match: match,
+                    start: match.index,
+                    end: match.index + match[0].length
+                });
+            }
+            
+            // Process tags in reverse order (innermost first)
+            const replacements: Array<{start: number, end: number, replacement: string}> = [];
+            
+            for (let i = tagMatches.length - 1; i >= 0; i--) {
+                const tagMatch = tagMatches[i];
+                const tagName = tagMatch.match[1].toUpperCase();
+                const attributes = tagMatch.match[2];
+                
+                // Check the context of this tag
+                const tagContext = this.getTagContext(processed, tagMatch.start);
+                
+                const handler = this.tagHandlers.get(tagName);
+                if (handler) {
+                    try {
+                        const replacement = await handler.process(attributes, context);
+                        
+                        // Determine final replacement based on context
+                        let finalReplacement: string;
+                        
+                        if (tagContext === 'textarea') {
+                            // Inside textarea, we need plain text only
+                            if (replacement === '') {
+                                finalReplacement = '';
+                            } else {
+                                // Extract text content, removing all HTML
+                                finalReplacement = replacement.replace(/<[^>]*>/g, '').trim();
+                            }
+                        } else if (tagContext === 'attribute') {
+                            // Inside attributes, we need clean text or attribute values
+                            if (tagName === 'CHECKED') {
+                                // For CHECKED tag, we need the actual attribute syntax
+                                finalReplacement = replacement ? ' checked="checked"' : '';
+                            } else if (tagName === 'SELECTED') {
+                                finalReplacement = replacement ? ' selected="selected"' : '';
+                            } else if (replacement === '') {
+                                finalReplacement = '';
+                            } else {
+                                // For other tags inside attributes, extract text content
+                                finalReplacement = replacement.replace(/<[^>]*>/g, '').trim();
+                            }
+                        } else {
+                            // Normal context - wrap with span for visualization
+                            finalReplacement = `<span class="aeon-tag" data-tag="${tagName}">${replacement}</span>`;
+                        }
+                        
+                        replacements.push({
+                            start: tagMatch.start,
+                            end: tagMatch.end,
+                            replacement: finalReplacement
+                        });
+                        
+                        hasChanges = true;
+                    } catch (error: any) {
+                        context.errors.push({
+                            tag: tagName,
+                            message: error.message,
+                            position: tagMatch.start
+                        });
+                    }
+                } else {
+                    // Unknown tag - remove it based on context
+                    let finalReplacement = '';
+                    if (tagContext === 'normal') {
+                        finalReplacement = `<!-- Unknown tag: ${tagName} -->`;
+                    }
+                    // For textarea and attribute contexts, just remove the tag (empty string)
                     
                     replacements.push({
-                        start: match.index,
-                        end: match.index + match[0].length,
-                        replacement: finalReplacement,
-                        isInAttribute
+                        start: tagMatch.start,
+                        end: tagMatch.end,
+                        replacement: finalReplacement
                     });
-                    
-                    context.tagMap.set(tagId, {
-                        type: tagName,
-                        attributes,
-                        originalText: match[0],
-                        position: { line: 0, column: match.index }
-                    });
-                } catch (error: any) {
-                    context.errors.push({
-                        tag: tagName,
-                        message: error.message,
-                        position: match.index
-                    });
+                    hasChanges = true;
                 }
-            } else {
-                // Unknown tag
-                const finalReplacement = isInAttribute ?
-                    '' :
-                    `<span class="aeon-tag unknown-tag" data-tag="${tagName}" data-tag-id="${tagId}"><!-- Unknown tag: ${tagName} --></span>`;
-                replacements.push({
-                    start: match.index,
-                    end: match.index + match[0].length,
-                    replacement: finalReplacement,
-                    isInAttribute
-                });
+            }
+            
+            // Apply all replacements for this iteration
+            for (const replacement of replacements) {
+                processed = processed.substring(0, replacement.start) + 
+                           replacement.replacement + 
+                           processed.substring(replacement.end);
             }
         }
         
-        // Apply replacements in reverse order
-        for (let i = replacements.length - 1; i >= 0; i--) {
-            const { start, end, replacement } = replacements[i];
-            processed = processed.substring(0, start) + replacement + processed.substring(end);
+        return processed;
+    }
+    
+    private getTagContext(content: string, position: number): 'textarea' | 'attribute' | 'normal' {
+        const beforeTag = content.substring(0, position);
+        
+        // Check if we're inside a textarea
+        const lastTextareaOpen = beforeTag.lastIndexOf('<textarea');
+        const lastTextareaClose = beforeTag.lastIndexOf('</textarea>');
+        if (lastTextareaOpen > -1 && lastTextareaOpen > lastTextareaClose) {
+            // We're inside a textarea if the last opening is after the last closing
+            return 'textarea';
         }
         
-        return processed;
+        // Check if we're inside an HTML tag attribute
+        const lastTagStart = beforeTag.lastIndexOf('<');
+        if (lastTagStart === -1) return 'normal';
+        
+        // Get the content from the last tag opening
+        const fromLastTag = beforeTag.substring(lastTagStart);
+        
+        // Check if we're still inside the tag (no closing > yet)
+        const closingBracket = fromLastTag.indexOf('>');
+        if (closingBracket === -1) {
+            // We're inside a tag, but need to check if we're in an attribute value
+            // Look for the pattern: attribute="..." or attribute='...'
+            
+            // Count quotes to determine if we're inside an attribute value
+            const doubleQuotes = (fromLastTag.match(/"/g) || []).length;
+            const singleQuotes = (fromLastTag.match(/'/g) || []).length;
+            
+            // If we have an odd number of either quote type, we're inside an attribute
+            if (doubleQuotes % 2 === 1 || singleQuotes % 2 === 1) {
+                return 'attribute';
+            }
+            
+            // If we're inside a tag but not in quotes, it's still an attribute context
+            // This handles cases like <input ... checked>
+            return 'attribute';
+        }
+        
+        return 'normal';
     }
     
     private isInsideAttributeOrTextarea(beforeTag: string, afterTag: string): boolean {

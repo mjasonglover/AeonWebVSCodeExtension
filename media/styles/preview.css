@@ -22,7 +22,27 @@ body {
     display: flex;
     gap: 8px;
     align-items: center;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    padding-bottom: 4px;
+}
+
+/* Allow horizontal scrolling on toolbar for small widths */
+.preview-toolbar::-webkit-scrollbar {
+    height: 4px;
+}
+
+.preview-toolbar::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.preview-toolbar::-webkit-scrollbar-thumb {
+    background: var(--vscode-scrollbarSlider-background);
+    border-radius: 2px;
+}
+
+.preview-toolbar::-webkit-scrollbar-thumb:hover {
+    background: var(--vscode-scrollbarSlider-hoverBackground);
 }
 
 .preview-control {
@@ -36,6 +56,8 @@ body {
     display: inline-flex;
     align-items: center;
     gap: 4px;
+    white-space: nowrap;
+    flex-shrink: 0;
 }
 
 .preview-control:hover {
@@ -347,15 +369,21 @@ select.preview-control {
     #preview-content {
         padding: 20px;
     }
-    
+}
+
+/* Only make toolbar responsive at very small widths */
+@media (max-width: 480px) {
     .preview-toolbar {
-        flex-direction: column;
-        align-items: stretch;
+        flex-wrap: wrap;
     }
     
     .preview-control {
-        width: 100%;
-        justify-content: center;
+        flex: 1 1 auto;
+        min-width: 120px;
+    }
+    
+    select.preview-control {
+        flex: 1 1 150px;
     }
 }
 
